@@ -24,8 +24,11 @@ class User:
                 return True
         return False
 
-    def set_task(self, task: int):
-        self.task = task
+    def role(self, *args):
+        return self.guild.get_role(roles.role_cx3.get(args[0]))
+
+    def language(self, *args):
+        return self.guild.get_role(roles.language.get(args[0]))
 
     def get_roles(self):
         return self.member.get_roles
