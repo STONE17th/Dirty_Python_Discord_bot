@@ -2,6 +2,7 @@ import datetime
 import os
 import random
 from datetime import timedelta
+from Text import info as inf
 
 import discord
 import asyncio
@@ -21,30 +22,15 @@ async def on_ready():
 @bot.event
 async def on_member_join(member):
     guild = bot.get_guild(id.channel_id)
-    embed_message = discord.Embed(title="Добро пожаловать!",
-                                  description=f'Привет, {member.mention}. Это Cru4 Code Crew Discord сервер\n'
-                                              f'Население: {guild.member_count}\nЗагляни в ЛС, я там тебе кое-чего прислал',
-                                  color=0x108001)
+    embed_message = inf.welcome_msg(member, guild)
     await bot.get_channel(id.start_channel).send(embed=embed_message)
-    await member.send(
-        f'Привет, {member.name}! Рады видеть тебя на этом сервере в наших рядах. Основная цель этого сервера - обмен опытом среди '
-        f'разработчиков и помощь другим менее опытным коллегам\n'
-        f'Хочешь быть действительно полезен? Предлагай проекты, меняйся полезными ссылками, давай советы, да и просто общайся в '
-        f'тексте и голосе\n'
-        f'Главное не груби, не обсуждай политоту (понимаем, что в наше время это сложно, но всё же) и не ставь себя выше других\n'
-        f'Поддерживай дружественную ламповую атмосферу :)\n'
-        f'С уважением, админы сервера CRU4 CODE CREW'
-        f'In CRUTCH we trust!')
+    await member.send(f'{inf.ls_msg(member)}')
 
 
 @bot.event
 async def on_member_remove(member):
     guild = bot.get_guild(id.channel_id)
-    embed_message = discord.Embed(title="Зафиксирован побег!",
-                                  description=f'Нас покинул {member.mention}.\n'
-                                              f'Нас осталось: {guild.member_count}\n'
-                                              f'Оно и к лучшему, не так уж мы тебя и любили',
-                                  color=0x8f1800)
+    embed_message = inf.remove_msg(member, guild)
     await bot.get_channel(id.start_channel).send(embed=embed_message)
 
 
@@ -138,7 +124,7 @@ async def task(ctx):
     try:
         message = await bot.wait_for('message', check=check, timeout=60)
     except asyncio.TimeoutError:
-        return await ctx.send(embed=discord.Embed(description=f"{ctx.author.mention} Время вышло!"))
+        return await ctx.send(embed=discord.Embed(description=f"{ctx.author.mention} {inf.out_of_time()}"))
 
     if message.content == str(tests.answer_py.get(task_number)):
         try:
@@ -146,13 +132,13 @@ async def task(ctx):
         except:
             pass
         await me.get_member().add_roles(me.role(2))
-        return await msg.edit(content=f'{ctx.author.mention} Вы прошли проверку')
+        return await msg.edit(content=f'{ctx.author.mention} {inf.task_solved()}')
     else:
         try:
             await message.delete()
         except:
             pass
-        return await msg.edit(content=f'{ctx.author.mention} Вы не прошли проверку')
+        return await msg.edit(content=f'{ctx.author.mention} {inf.task_failed}')
 
 
 @bot.command(aliases=['я', 'Я'])
