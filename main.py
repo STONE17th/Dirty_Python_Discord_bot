@@ -1,4 +1,5 @@
 import datetime
+import os
 import random
 from datetime import timedelta
 
@@ -9,7 +10,6 @@ from Classes.user import User
 from Data import tests, id, roles
 
 bot = commands.Bot(command_prefix='/', intents=discord.Intents.all())
-# bot.run('MTA0NTk5NDE0NDk1NjQxNjA0MA.GXasph.yMUIv0dm3Y15dITAtg__3nc3BU8buwFGUVncwk')
 
 
 @bot.event
@@ -26,6 +26,15 @@ async def on_member_join(member):
                                               f'Население: {guild.member_count}\nЗагляни в ЛС, я там тебе кое-чего прислал',
                                   color=0x108001)
     await bot.get_channel(id.start_channel).send(embed=embed_message)
+    await member.send(
+        f'Привет, {member.name}! Рады видеть тебя на этом сервере в наших рядах. Основная цель этого сервера - обмен опытом среди '
+        f'разработчиков и помощь другим менее опытным коллегам\n'
+        f'Хочешь быть действительно полезен? Предлагай проекты, меняйся полезными ссылками, давай советы, да и просто общайся в '
+        f'тексте и голосе\n'
+        f'Главное не груби, не обсуждай политоту (понимаем, что в наше время это сложно, но всё же) и не ставь себя выше других\n'
+        f'Поддерживай дружественную ламповую атмосферу :)\n'
+        f'С уважением, админы сервера CRU4 CODE CREW'
+        f'In CRUTCH we trust!')
 
 
 @bot.event
@@ -38,11 +47,12 @@ async def on_member_remove(member):
                                   color=0x8f1800)
     await bot.get_channel(id.start_channel).send(embed=embed_message)
 
+
 @bot.command()
 async def rules(ctx):
     rule1 = discord.Embed(title="NPC (Общие правила, без доступа)",
-                              description=f'Особых правил нет. Просто не хамим, не переходим на личности, не обсуждаем политоту. Основная цель - совместное решение задач и обмен опытом. для получения минимального доступа - команда /task',
-                              color=0xcfcfcf)
+                          description=f'Особых правил нет. Просто не хамим, не переходим на личности, не обсуждаем политоту. Основная цель - совместное решение задач и обмен опытом. для получения минимального доступа - команда /task\n**ВАЖНО** Если пользователь не получает роль Public Static Main в течение недели с момента захода на сервер - то автоматически исключается с сервера',
+                          color=0xcfcfcf)
     rule2 = discord.Embed(title="Public Static Main (Зеленый доступ)",
                           description=f'Доступ к основным голосовым каналам по Пайтону и Джаве. Доступ к "библиотекам" с материалами и ссылками. Доступ можно получить командой /task',
                           color=0x0ba100)
@@ -60,6 +70,7 @@ async def rules(ctx):
     await bot.get_channel(id.rules_id).send(embed=rule3)
     await bot.get_channel(id.rules_id).send(embed=rule4)
     await bot.get_channel(id.rules_id).send(embed=rule5)
+
 
 @tasks.loop(hours=24.0)
 async def check_kick_data():
@@ -91,6 +102,28 @@ def check_delay(member: discord.Member):
                 return False
         return True
 
+
+@bot.command(aliases=['инфо', 'помощь'])
+async def info(ctx):
+    me = User(ctx, bot)
+    join_date = me.get_member().joined_at.timestamp()
+    now_date = datetime.datetime.now().timestamp()
+    delta = now_date - join_date
+    for role in me.get_member().roles:
+        if roles.role_cx3.get(2) == role:
+            await ctx.author.send(f'Привет, {(ctx.author.mention)}! Ты уже получил роль с минимальным доступом и можешь '
+                                  f'находится на сервере бессрочно :) Из доступных тебе команд у тебя пока только всё '
+                                  f'та же команда /task (можешь порешать другие задачи, результат выполнения ни на что '
+                                  f'не повлияет.\nБот постоянно развивается и функционал будет допиливаться\n'
+                                  f'Если есть предложения по продвижению бота и сервера - пиши кому-нибудь из админов')
+            break
+    else:
+        await ctx.author.send(
+            f'Привет, {(ctx.author.mention)}! В первую очередь тебе надо получить роль минимального доступа. Для этого '
+            f'в текстовом чате введи команду /task и реши небольшую задачку (да, да, как на CodeWars)\n'
+            f'Если этого не сделать то ,через '
+            f'{timedelta(days=7) - timedelta(seconds=int(delta))} '
+            f'ты будешь изгнан из сервера (без позора, но тоже не приятно')
 
 @bot.command()
 async def task(ctx):
@@ -160,4 +193,5 @@ async def delete_message(ctx):
     except:
         pass
 
-bot.run('MTA0NTk5NDE0NDk1NjQxNjA0MA.GXasph.yMUIv0dm3Y15dITAtg__3nc3BU8buwFGUVncwk')
+
+bot.run(os.getenv('TOKEN'))
