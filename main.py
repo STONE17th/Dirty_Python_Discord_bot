@@ -53,12 +53,9 @@ async def check_kick_data():
         if check_delay(member):
             if (time_now - timedelta(days=7)).strftime(format) > member.joined_at.strftime(format):
                 await member.send(inf.kick_msg(member)[0])
-            elif (time_now - timedelta(days=6)).strftime(format) > member.joined_at.strftime(format):
-                await member.send(inf.kick_msg(member)[1])
-            elif (time_now - timedelta(days=3)).strftime(format) > member.joined_at.strftime(format):
-                await member.send(inf.kick_msg(member)[2])
-            elif (time_now - timedelta(days=1)).strftime(format) > member.joined_at.strftime(format):
-                await member.send(inf.kick_msg(member)[3])
+                await kick_off(member)
+            else:
+                pass
 
 
 def check_delay(member: discord.Member):
@@ -73,16 +70,22 @@ def check_delay(member: discord.Member):
 
 @bot.command(aliases=['инфо', 'помощь'])
 async def info(ctx):
+    await delete_message(ctx)
     me = User(ctx, bot)
     join_date = me.get_member().joined_at.timestamp()
     now_date = datetime.datetime.now().timestamp()
     delta = now_date - join_date
     for role in me.get_member().roles:
-        if roles.role_cx3.get(2) == role:
+        if roles.role_cx3.get(2) == int(role.id):
             await ctx.author.send(inf.info_msg(ctx, delta)[0])
             break
     else:
         await ctx.author.send(inf.info_msg(ctx, delta)[1])
+
+
+async def kick_off(member: discord.Member):
+    await member.kick()
+
 
 @bot.command()
 async def task(ctx):
@@ -111,11 +114,12 @@ async def task(ctx):
             await message.delete()
         except:
             pass
-        return await msg.edit(content=f'{ctx.author.mention} {tsk.task_failed}')
+        return await msg.edit(content=f'{ctx.author.mention} {tsk.task_failed()}')
 
 
 @bot.command(aliases=['я', 'Я'])
 async def my_language(ctx, *args):
+    await delete_message(ctx)
     me = User(ctx, bot)
     if str(args[0]).lower().startswith('п') or str(args[0]).lower().startswith('p'):
         await me.get_member().add_roles(me.language('python'))
@@ -153,4 +157,5 @@ async def delete_message(ctx):
         pass
 
 
-bot.run(os.getenv('TOKEN'))
+# bot.run(os.getenv('TOKEN'))
+bot.run('MTA0NzAzMTM3NjEwNjQ5MTk3NA.Gr46ov.oYRTc9so9ZqUmsn2b0F1JtWsNI0X5_i2KsMpig')
