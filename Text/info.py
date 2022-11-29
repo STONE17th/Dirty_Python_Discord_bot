@@ -106,22 +106,22 @@ def time_to_die(member):
     descr_bye = choice([f'Пока, {member.name}! Доигрался!'])
     six_days = discord.Embed(title=f"{ttl}",
                              description=f'{descr_6days}',
-                             color=0xFFFF00)
+                             color=0x33d402)
     five_days = discord.Embed(title=f"{ttl}",
                               description=f'{descr_5days}',
-                              color=0xFFFF00)
+                              color=0x9cd402)
     four_days = discord.Embed(title=f"{ttl}",
                               description=f'{descr_4days}',
-                              color=0xFFFF00)
+                              color=0xd4d402)
     three_days = discord.Embed(title=f"{ttl}",
                                description=f'{descr_3days}',
-                               color=0xFFFF00)
+                               color=0xd4a302)
     two_days = discord.Embed(title=f"{ttl}",
                              description=f'{descr_2days}',
-                             color=0xFFFF00)
+                             color=0xd46402)
     one_day = discord.Embed(title=f"{ttl}",
                             description=f'{descr_1day}',
-                            color=0xFFFF00)
+                            color=0xd40202)
     bye_bye = discord.Embed(title="Вот и всё!",
                             description=f'{descr_bye}!',
                             color=0x8f1800)
