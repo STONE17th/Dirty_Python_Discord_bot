@@ -3,6 +3,7 @@ import os
 import random
 from datetime import timedelta
 from Text import info as inf
+from Text import tasks as tsk
 
 import discord
 import asyncio
@@ -36,26 +37,11 @@ async def on_member_remove(member):
 
 @bot.command()
 async def rules(ctx):
-    rule1 = discord.Embed(title="NPC (Общие правила, без доступа)",
-                          description=f'Особых правил нет. Просто не хамим, не переходим на личности, не обсуждаем политоту. Основная цель - совместное решение задач и обмен опытом. для получения минимального доступа - команда /task\n**ВАЖНО** Если пользователь не получает роль Public Static Main в течение недели с момента захода на сервер - то автоматически исключается с сервера',
-                          color=0xcfcfcf)
-    rule2 = discord.Embed(title="Public Static Main (Зеленый доступ)",
-                          description=f'Доступ к основным голосовым каналам по Пайтону и Джаве. Доступ к "библиотекам" с материалами и ссылками. Доступ можно получить командой /task',
-                          color=0x0ba100)
-    rule3 = discord.Embed(title="Кра4Кодер (Синий доступ)",
-                          description=f'Доступ к голосовым канала по Пайтон и Джава. Решаем дополнительные задачи и реализуем пет-проекты. Доступ можно получить по подписке на Boosty',
-                          color=0x062cc4)
-    rule4 = discord.Embed(title="while (True): (Фиолетовый доступ)",
-                          description=f'Возможность заходить на стрим в голосовом режиме и демонстрацией экрана, так же доступ к записям всех стримов. Доступ можно получить по подписке на Boosty',
-                          color=0x690191)
-    rule5 = discord.Embed(title="Админ (Оранжевый доступ)",
-                          description=f'По поводу всех вопросов на сервере к людям с этой ролью. Предложения по продвижению и прочим орг.вопросам тоже к ним',
-                          color=0xe69a02)
-    await bot.get_channel(id.rules_id).send(embed=rule1)
-    await bot.get_channel(id.rules_id).send(embed=rule2)
-    await bot.get_channel(id.rules_id).send(embed=rule3)
-    await bot.get_channel(id.rules_id).send(embed=rule4)
-    await bot.get_channel(id.rules_id).send(embed=rule5)
+    await bot.get_channel(id.rules_id).send(embed=inf.rules_msg()[0])
+    await bot.get_channel(id.rules_id).send(embed=inf.rules_msg()[1])
+    await bot.get_channel(id.rules_id).send(embed=inf.rules_msg()[2])
+    await bot.get_channel(id.rules_id).send(embed=inf.rules_msg()[3])
+    await bot.get_channel(id.rules_id).send(embed=inf.rules_msg()[4])
 
 
 @tasks.loop(hours=24.0)
@@ -66,17 +52,13 @@ async def check_kick_data():
     for member in guild.members:
         if check_delay(member):
             if (time_now - timedelta(days=7)).strftime(format) > member.joined_at.strftime(format):
-                await member.send(
-                    f'{member.name}! Всё, пока! Доигрался!')
+                await member.send(inf.kick_msg(member)[0])
             elif (time_now - timedelta(days=6)).strftime(format) > member.joined_at.strftime(format):
-                await member.send(
-                    f'{member.name}, завтра мы с тобой попрощаемся, если... ну ты в курсе. Команда /task')
+                await member.send(inf.kick_msg(member)[1])
             elif (time_now - timedelta(days=3)).strftime(format) > member.joined_at.strftime(format):
-                await member.send(
-                    f'{member.name}, осталось 4 дня! Получай доступ скорее! Команда /task')
+                await member.send(inf.kick_msg(member)[2])
             elif (time_now - timedelta(days=1)).strftime(format) > member.joined_at.strftime(format):
-                await member.send(
-                    f'{member.name} есть еще 6 дней, чтобы получить минимальный доступ. Используй команду /task')
+                await member.send(inf.kick_msg(member)[3])
 
 
 def check_delay(member: discord.Member):
@@ -97,19 +79,10 @@ async def info(ctx):
     delta = now_date - join_date
     for role in me.get_member().roles:
         if roles.role_cx3.get(2) == role:
-            await ctx.author.send(f'Привет, {(ctx.author.mention)}! Ты уже получил роль с минимальным доступом и можешь '
-                                  f'находится на сервере бессрочно :) Из доступных тебе команд у тебя пока только всё '
-                                  f'та же команда /task (можешь порешать другие задачи, результат выполнения ни на что '
-                                  f'не повлияет.\nБот постоянно развивается и функционал будет допиливаться\n'
-                                  f'Если есть предложения по продвижению бота и сервера - пиши кому-нибудь из админов')
+            await ctx.author.send(inf.info_msg(ctx, delta)[0])
             break
     else:
-        await ctx.author.send(
-            f'Привет, {(ctx.author.mention)}! В первую очередь тебе надо получить роль минимального доступа. Для этого '
-            f'в текстовом чате введи команду /task и реши небольшую задачку (да, да, как на CodeWars)\n'
-            f'Если этого не сделать то ,через '
-            f'{timedelta(days=7) - timedelta(seconds=int(delta))} '
-            f'ты будешь изгнан из сервера (без позора, но тоже не приятно')
+        await ctx.author.send(inf.info_msg(ctx, delta)[1])
 
 @bot.command()
 async def task(ctx):
@@ -124,7 +97,7 @@ async def task(ctx):
     try:
         message = await bot.wait_for('message', check=check, timeout=60)
     except asyncio.TimeoutError:
-        return await ctx.send(embed=discord.Embed(description=f"{ctx.author.mention} {inf.out_of_time()}"))
+        return await ctx.send(embed=discord.Embed(description=f"{ctx.author.mention} {tsk.out_of_time()}"))
 
     if message.content == str(tests.answer_py.get(task_number)):
         try:
@@ -132,13 +105,13 @@ async def task(ctx):
         except:
             pass
         await me.get_member().add_roles(me.role(2))
-        return await msg.edit(content=f'{ctx.author.mention} {inf.task_solved()}')
+        return await msg.edit(content=f'{ctx.author.mention} {tsk.task_solved()}')
     else:
         try:
             await message.delete()
         except:
             pass
-        return await msg.edit(content=f'{ctx.author.mention} {inf.task_failed}')
+        return await msg.edit(content=f'{ctx.author.mention} {tsk.task_failed}')
 
 
 @bot.command(aliases=['я', 'Я'])
