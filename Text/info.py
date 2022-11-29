@@ -78,13 +78,25 @@ def info_msg(ctx, delta):
 
 def time_to_die(member):
     ttl = choice["Тик-так", "Часики тикают", "Время идёт"]
-    descr_6days = choice[f'{member.name} есть еще 6 дней, чтобы получить минимальный доступ. Используй команду /task']
-    descr_5days = choice[f'{member.name} у тебя еще 5 дней, чтобы получить доступ. Используй команду /task']
-    descr_4days = choice[f'{member.name}, осталось 4 дня! Получай доступ скорее! Команда /task']
-    descr_3days = choice[f'{member.name}, осталось 3 дня! Просто реши задачу! Команда /task']
-    descr_2days = choice[f'{member.name}, осталось 2 дня! Времени почти не осталось! Команда /task']
-    descr_1day = choice[f'{member.name}, завтра мы с тобой попрощаемся, если... ну ты в курсе. Команда /task']
-    descr_bye = choice[f'Пока, {member.name}! Доигрался!']
+    descr_6days = choice[f'{member.name} есть еще 6 дней, чтобы получить минимальный доступ. Используй команду /task',
+    f'{member.name} у тебя еще 6 дней, чтобы получить доступ. Используй команду /task',
+    f'{member.name}, осталось 6 дней! Получай доступ скорее! Команда /task',
+    f'{member.name}, осталось 6 дней! Просто реши задачу! Команда /task']
+    descr_5days = choice[f'{member.name} есть еще 5 дней, чтобы получить минимальный доступ. Используй команду /task',
+    f'{member.name} у тебя еще 5 дней, чтобы получить доступ. Используй команду /task',
+    f'{member.name}, осталось 5 дней! Получай доступ скорее! Команда /task',
+    f'{member.name}, осталось 5 дней! Просто реши задачу! Команда /task']
+    descr_4days = choice[f'{member.name} есть еще 4 дня, чтобы получить минимальный доступ. Используй команду /task',
+    f'{member.name} у тебя еще 4 дня, чтобы получить доступ. Используй команду /task',
+    f'{member.name}, осталось 4 дня! Получай доступ скорее! Команда /task',
+    f'{member.name}, осталось 4 дня! Просто реши задачу! Команда /task']
+    descr_3days = choice[f'{member.name}, осталось 3 дня! Просто реши задачу! Команда /task',
+    f'{member.name}, осталось 3 дня! Пора бы подумать о задаче! Команда /task']
+    descr_2days = choice[f'{member.name}, осталось 2 дня! Времени почти не осталось! Команда /task',
+    f'{member.name}, осталось 2 дня! Всего! Два! Дня! Команда /task']
+    descr_1day = choice[f'{member.name}, завтра мы с тобой попрощаемся, если... ну ты в курсе. Команда /task',
+    f'{member.name}, Сегодня - последний день, чтобы пройти проверку. Команда /task']
+    descr_bye = choice[f'Пока, {member.name}! Доигрался!', f'Мда, {member.name}! Вот он, конец.', f'Ну вот, {member.name}! Конец нашей истории' ]
     six_days = discord.Embed(title=f"{ttl}",
                           description=f'{descr_6days}',
                           color=0xFFFF00)
