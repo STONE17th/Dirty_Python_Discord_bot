@@ -75,3 +75,36 @@ def info_msg(ctx, delta):
 Если этого не сделать то ,через {timedelta(days=7) - timedelta(seconds=int(delta))} ты будешь изгнан из сервера (без позора, но тоже не приятно)'
     msg = [msg1, msg2]
     return msg
+
+def time_to_die(member):
+    ttl = choice["Тик-так", "Часики тикают", "Время идёт"]
+    descr_6days = choice[f'{member.name} есть еще 6 дней, чтобы получить минимальный доступ. Используй команду /task']
+    descr_5days = choice[f'{member.name} у тебя еще 5 дней, чтобы получить доступ. Используй команду /task']
+    descr_4days = choice[f'{member.name}, осталось 4 дня! Получай доступ скорее! Команда /task']
+    descr_3days = choice[f'{member.name}, осталось 3 дня! Просто реши задачу! Команда /task']
+    descr_2days = choice[f'{member.name}, осталось 2 дня! Времени почти не осталось! Команда /task']
+    descr_1day = choice[f'{member.name}, завтра мы с тобой попрощаемся, если... ну ты в курсе. Команда /task']
+    descr_bye = choice[f'Пока, {member.name}! Доигрался!']
+    six_days = discord.Embed(title=f"{ttl}",
+                          description=f'{descr_6days}',
+                          color=0xFFFF00)
+    five_days = discord.Embed(title=f"{ttl}",
+                          description=f'{descr_5days}',
+                          color=0xFFFF00)
+    four_days = discord.Embed(title=f"{ttl}",
+                          description=f'{descr_4days}',
+                          color=0xFFFF00)
+    three_days = discord.Embed(title=f"{ttl}",
+                          description=f'{descr_3days}',
+                          color=0xFFFF00)
+    two_days = discord.Embed(title=f"{ttl}",
+                          description=f'{descr_2days}',
+                          color=0xFFFF00)                
+    one_day= discord.Embed(title=f"{ttl}",
+                          description=f'{descr_1day}',
+                          color=0xFFFF00)
+    bye_bye = discord.Embed(title="Вот и всё!",
+                          description=f'{descr_bye}!',
+                          color=0x8f1800)
+    msg = [six_days, five_days, four_days, three_days, two_days, one_day, bye_bye]
+    return msg
