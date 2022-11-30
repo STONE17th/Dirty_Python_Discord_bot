@@ -11,7 +11,7 @@ test.append(
     'list = [2, 5, 4, 7]\nmax = list[0]\nfor i in range(len(list) - 1):\n\tif list[i] > max:\n\t\tmax = list['
     'i]\nprint(max)')  # 6
 test.append('s = "Contex 3"\nprint(s[0] + s[5] + s[7])')  # 7
-test.append('s = "s = "ur4"\ns += \'C\'\nprint(s[-1] + s[1]\n+ s[-4] + s[2])')  # 8
+test.append('s = "ur4"\ns += \'C\'\nprint(s[-1] + s[1] + s[-4] + s[2])')  # 8
 test.append('y = 2**2 - 4\nif y == True:\n\tprint(\'Hallo\')\nelse:\n\tprint(\'Hi\')')  # 9
 test.append('y = 2**3 - 7\nx = True\nif y == x:\n\tprint(\'Hallo\')\nelse:\n\tprint(\'Hi\')')  # 10
 test.append('list1 = [\'hi\', \'welcome\']\nlist2 = list1\nlist2.append(\'bro\')\nprint(list1[-1])')  # 11
