@@ -47,6 +47,8 @@ async def rules(ctx):
 @tasks.loop(hours=24.0)
 async def check_kick_data():
     guild = bot.get_guild(id.channel_id)
+    time_now = datetime.datetime.now()
+    format = "%d.%m.%Y %H:%M:%S"
     for member in guild.members:
         join_date = datetime.date(*(list(map(int, str(member.joined_at).split(' ')[0].split('-')))))
         now_date = datetime.date.today()
@@ -54,8 +56,10 @@ async def check_kick_data():
         days_remain = (deadline_date - now_date).days
         if check_delay(member):
             if days_remain < 0:
-                await bot.get_channel(id.start_channel).send(f'От нас свалил {member.name}')
-                # await kick_off(member)
+                col = int(str('ffc400'), 16)
+                embed_message = discord.Embed(color=col, title='Время вышло!', description=f'{member.name}, мы давали тебе 7 дней для получения минимальной роли, но ты этим не воспользовался!\nПусть твой уход будет уроком для остальных!\n\nУвидимся на семинарах в GB :)')
+                await bot.get_channel(id.start_channel).send(embed=embed_message)
+                await member.kick()
             else:
                 msg = inf.time_to_die(member)
                 await member.send(embed=msg[days_remain - 1])
@@ -84,10 +88,6 @@ async def info(ctx):
             break
     else:
         await ctx.author.send(inf.info_msg(ctx, delta)[1])
-
-
-async def kick_off(member: discord.Member):
-    await member.kick()
 
 
 @bot.command()
@@ -160,5 +160,5 @@ async def delete_message(ctx):
         pass
 
 
-bot.run(os.getenv('TOKEN'))
-# bot.run('')
+# bot.run(os.getenv('TOKEN'))
+bot.run('MTA0NzAzMTM3NjEwNjQ5MTk3NA.Gr46ov.oYRTc9so9ZqUmsn2b0F1JtWsNI0X5_i2KsMpig')
