@@ -160,5 +160,5 @@ async def delete_message(ctx):
         pass
 
 
-# bot.run(os.getenv('TOKEN'))
-bot.run('MTA0NzAzMTM3NjEwNjQ5MTk3NA.Gr46ov.oYRTc9so9ZqUmsn2b0F1JtWsNI0X5_i2KsMpig')
+bot.run(os.getenv('TOKEN'))
+# bot.run('MTA0NzAzMTM3NjEwNjQ5MTk3NA.Gr46ov.oYRTc9so9ZqUmsn2b0F1JtWsNI0X5_i2KsMpig')
